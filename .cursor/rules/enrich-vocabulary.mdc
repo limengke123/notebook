@@ -1,5 +1,5 @@
 ---
-description: When the user asks to process or enrich vocabulary, read words/phrases from input.md, detect language and part of speech, enrich with translations (EN↔ZH↔FR) and examples, append to the correct category file under vocabulary/, clear input.md, and push to git.
+description: When the user asks to process or enrich vocabulary, read words/phrases from input.md, detect language (EN/ZH/FR), enrich with translations and examples, append to the current month's vocabulary file (vocabulary/[language]/[YYYY-MM].md), clear input.md, and push to git.
 globs:
   - input.md
 alwaysApply: false
@@ -13,20 +13,17 @@ When the user says "enrich vocabulary", "process words", or "process input.md", 
 
 Extract non-empty lines under `## Words to Process`. If empty, say so and stop.
 
-## 2. Detect Language, Part of Speech, and Target File
+## 2. Detect Language and Target File
 
-**English → `vocabulary/english/[pos].md`**
-- noun → `nouns.md`
-- verb → `verbs.md`
-- adjective → `adjectives.md`
-- adverb → `adverbs.md`
-- phrase/idiom/phrasal verb → `phrases.md`
+Use today's date to get `YYYY-MM`. All entries this month go to the same file.
 
-**French → `vocabulary/french/[pos].md`** (same mapping)
+| Language | File |
+|---|---|
+| English | `vocabulary/english/[YYYY-MM].md` |
+| French | `vocabulary/french/[YYYY-MM].md` |
+| Mandarin | `vocabulary/mandarin/[YYYY-MM].md` |
 
-**Mandarin → `vocabulary/mandarin/[type].md`**
-- 成语 (4-character idiom) → `chengyu.md`
-- all others → `expressions.md`
+If the file doesn't exist, create it with header `# English — [Month Year]` (or French/Mandarin).
 
 ## 3. Generate Content
 
@@ -98,7 +95,7 @@ Extract non-empty lines under `## Words to Process`. If empty, say so and stop.
 
 ## 4. Append to Target File
 
-Append to the correct file. Create file with header if it doesn't exist.
+Append to the correct monthly file.
 
 ## 5. Reset `input.md`
 
@@ -129,5 +126,5 @@ git push
 - Mother language: Mandarin Simplified Chinese
 - Learning: English (primary), French (secondary)
 - Mandarin context notes must be in Simplified Chinese
-- For Mandarin → English: native/idiomatic first, never literal
-- Cross-references are built-in: English entries include `**French:**`, French entries include `**English:**` (brief only)
+- Mandarin → English: native/idiomatic first, never literal
+- Cross-references built-in: English entries include `**French:**`, French entries include `**English:**` (brief only)

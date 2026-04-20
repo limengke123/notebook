@@ -3,7 +3,7 @@
 This repository is a personal vocabulary learning notebook. The primary workflow:
 
 1. User adds words/phrases to `input.md` under `## Words to Process`
-2. Agent enriches each entry and saves it to the correct category file in `vocabulary/`
+2. Agent enriches each entry and saves it to the current month's file in `vocabulary/`
 3. Agent clears `input.md` and pushes the changes
 4. GitHub Actions auto-builds the MkDocs site and deploys to GitHub Pages
 
@@ -15,28 +15,21 @@ This repository is a personal vocabulary learning notebook. The primary workflow
 
 Extract all non-empty lines under `## Words to Process`. If empty, say so and stop.
 
-### Step 2 — Detect Language, Part of Speech, and Target File
+### Step 2 — Detect Language and Target File
 
-**English entries — file routing by part of speech:**
-| Part of speech | File |
+Determine language for each entry. Use today's date to get `YYYY-MM`.
+
+| Language | Target file |
 |---|---|
-| noun | `vocabulary/english/nouns.md` |
-| verb | `vocabulary/english/verbs.md` |
-| adjective | `vocabulary/english/adjectives.md` |
-| adverb | `vocabulary/english/adverbs.md` |
-| phrase, idiom, phrasal verb | `vocabulary/english/phrases.md` |
+| English | `vocabulary/english/[YYYY-MM].md` |
+| French | `vocabulary/french/[YYYY-MM].md` |
+| Mandarin | `vocabulary/mandarin/[YYYY-MM].md` |
 
-**French entries — same mapping under `vocabulary/french/`**
-
-**Mandarin entries:**
-| Type | File |
-|---|---|
-| 成语 (4-character idiom) | `vocabulary/mandarin/chengyu.md` |
-| all other expressions | `vocabulary/mandarin/expressions.md` |
+If the file doesn't exist, create it with header `# English — [Month Year]` (or French/Mandarin).
 
 ### Step 3 — Generate Content
 
-**English** → `vocabulary/english/[pos].md`
+**English** → `vocabulary/english/[YYYY-MM].md`
 ```
 ## [word] ([part of speech])
 > *Added: [YYYY-MM-DD]*
@@ -58,9 +51,9 @@ Extract all non-empty lines under `## Words to Process`. If empty, say so and st
 ---
 ```
 
-**Mandarin** → `vocabulary/mandarin/[type].md`
+**Mandarin** → `vocabulary/mandarin/[YYYY-MM].md`
 
-User knows this in Chinese; wants to express it naturally in English (primary) and French. Prioritize idiomatic over literal English.
+User knows this in Chinese; wants to say it naturally in English (primary) and French.
 ```
 ## [expression]
 > *Added: [YYYY-MM-DD]*
@@ -84,7 +77,7 @@ User knows this in Chinese; wants to express it naturally in English (primary) a
 ---
 ```
 
-**French** → `vocabulary/french/[pos].md`
+**French** → `vocabulary/french/[YYYY-MM].md`
 ```
 ## [word] ([part of speech][, gender])
 > *Added: [YYYY-MM-DD]*
@@ -106,7 +99,7 @@ User knows this in Chinese; wants to express it naturally in English (primary) a
 
 ### Step 4 — Append to Target File
 
-Append to the correct file. If the file doesn't exist, create it with an appropriate header.
+Append to the correct monthly file.
 
 ### Step 5 — Reset `input.md`
 
@@ -138,6 +131,6 @@ git push
 
 - Mother language: Mandarin Simplified Chinese
 - Learning: English (primary) and French (secondary)
-- Context notes for Mandarin entries must be in Simplified Chinese
-- For Mandarin → English: always use what a native speaker would naturally say, not literal translations
-- Cross-references are built into every entry: English entries always include a `**French:**` line; French entries always include an `**English:**` line (brief form only, not a full entry)
+- Mandarin context notes must be in Simplified Chinese
+- For Mandarin → English: always use what a native speaker would naturally say
+- Cross-references are built in: English entries include `**French:**`; French entries include `**English:**` (brief only)
