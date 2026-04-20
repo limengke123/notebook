@@ -1,0 +1,120 @@
+---
+description: Enrich vocabulary entries from input.md — translate, add examples, save to vocabulary files, and push to git.
+globs:
+  - input.md
+alwaysApply: false
+---
+
+# Enrich Vocabulary Rule
+
+When the user asks to "enrich vocabulary", "process words", or "process input.md", follow this workflow:
+
+## 1. Read `input.md`
+
+Extract all non-empty lines under `## Words to Process`. If empty, say so and stop.
+
+## 2. Enrich Each Entry
+
+**English word/phrase** → save to `vocabulary/english.md`
+
+```
+## [word] ([part of speech])
+> *Added: [YYYY-MM-DD]*
+
+**Mandarin:** [translation] ([pinyin])
+**French:** [translation]
+
+**Definition:** [concise definition]
+
+**Examples:**
+- 🇺🇸 [English sentence]
+- 🇨🇳 [Mandarin sentence]
+- 🇫🇷 [French sentence]
+
+**Phrases & Collocations:**
+- [collocation]: [Mandarin gloss]
+- [collocation]: [Mandarin gloss]
+
+---
+```
+
+**Mandarin word/expression** → save to `vocabulary/mandarin.md`
+
+User wants to know how to say this naturally in English (primary) and French. Prioritize idiomatic, native-sounding English over literal translation.
+
+```
+## [expression] ([pinyin])
+> *Added: [YYYY-MM-DD]*
+
+**English Equivalents** *(most idiomatic → more literal)*
+1. [most native expression] — [register note]
+2. [second option] — [note]
+3. [third option] — [note]
+
+**French Equivalents:**
+- [expression] — [note]
+- [expression] — [note]
+
+**Context:** [usage/nuance explanation in Simplified Chinese]
+
+**Examples:**
+- 🇨🇳 [Mandarin sentence]
+- 🇺🇸 [English — most natural expression]
+- 🇫🇷 [French example]
+
+---
+```
+
+**French word/phrase** → save to `vocabulary/french.md`
+
+```
+## [word] ([part of speech][, gender])
+> *Added: [YYYY-MM-DD]*
+
+**Mandarin:** [translation] ([pinyin])
+**English:** [translation]
+
+**Note:** [usage note or definition]
+
+**Examples:**
+- 🇫🇷 [French sentence]
+- 🇺🇸 [English sentence]
+- 🇨🇳 [Mandarin sentence]
+
+**Register:** [formal / informal / neutral / slang / literary]
+
+---
+```
+
+## 3. Reset `input.md`
+
+After processing all entries, overwrite `input.md` with:
+
+```markdown
+# Vocabulary Input
+
+Add words, phrases, or expressions you want to learn below — one per line.
+Supported input languages: **English**, **Mandarin (中文)**, **French**.
+
+Run the `enrich-vocabulary` skill to process this file.
+
+---
+
+## Words to Process
+
+```
+
+## 4. Git Commit and Push
+
+```bash
+git add -A
+git commit -m "vocab: add [list of words processed]"
+git push
+```
+
+## User Context
+
+- Mother language: Mandarin Simplified Chinese
+- Learning: English (primary focus) and French
+- Context notes and explanations for Mandarin entries should be written in Simplified Chinese
+- For Mandarin → English: always prioritize what a native English speaker would naturally say
