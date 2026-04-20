@@ -1,3 +1,7 @@
+---
+description: Read words/phrases from input.md, enrich each with translations (EN↔ZH↔FR), definitions, and examples, append to the matching vocabulary file, clear the input, and push to git. Supports English, Mandarin, and French input.
+---
+
 # Enrich Vocabulary
 
 Process words and phrases from `input.md`, enrich each one with translations and examples, append to the appropriate vocabulary file, clear the input, and push to git.

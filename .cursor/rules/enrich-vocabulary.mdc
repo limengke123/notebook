@@ -1,5 +1,5 @@
 ---
-description: Enrich vocabulary entries from input.md — translate, add examples, save to vocabulary files, and push to git.
+description: When the user asks to process or enrich vocabulary, read words/phrases from input.md, detect language (English/Mandarin/French), enrich with translations (EN↔ZH↔FR), definitions, and example sentences, append to the matching vocabulary file under vocabulary/, clear input.md, and push to git.
 globs:
   - input.md
 alwaysApply: false
