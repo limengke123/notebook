@@ -21,7 +21,7 @@ Extract all non-empty lines under `## Words to Process`. If empty, say so and st
 ## [word] ([part of speech])
 > *Added: [YYYY-MM-DD]*
 
-**Mandarin:** [translation] ([pinyin])
+**Mandarin:** [translation]
 **French:** [translation]
 
 **Definition:** [concise definition]
@@ -43,7 +43,7 @@ Extract all non-empty lines under `## Words to Process`. If empty, say so and st
 User wants to know how to say this naturally in English (primary) and French. Prioritize idiomatic, native-sounding English over literal translation.
 
 ```
-## [expression] ([pinyin])
+## [expression]
 > *Added: [YYYY-MM-DD]*
 
 **English Equivalents** *(most idiomatic → more literal)*
@@ -71,7 +71,7 @@ User wants to know how to say this naturally in English (primary) and French. Pr
 ## [word] ([part of speech][, gender])
 > *Added: [YYYY-MM-DD]*
 
-**Mandarin:** [translation] ([pinyin])
+**Mandarin:** [translation]
 **English:** [translation]
 
 **Note:** [usage note or definition]

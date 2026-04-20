@@ -7,7 +7,7 @@ English words and phrases with Mandarin and French translations, definitions, an
 ## underrated (adjective)
 > *Added: 2026-04-20*
 
-**Mandarin:** 被低估的 (bèi dīgū de)
+**Mandarin:** 被低估的
 **French:** sous-estimé(e)
 
 **Definition:** Considered less impressive, valuable, or talented than one actually is; not given enough credit or appreciation.
@@ -28,7 +28,7 @@ English words and phrases with Mandarin and French translations, definitions, an
 ## underestimate (verb / noun)
 > *Added: 2026-04-20*
 
-**Mandarin:** 低估 (dīgū)
+**Mandarin:** 低估
 **French:** sous-estimer (v.) / sous-estimation (n.)
 
 **Definition:** To think of something or someone as being smaller, less important, or less capable than they actually are. As a noun: an estimate that is too low.
@@ -49,7 +49,7 @@ English words and phrases with Mandarin and French translations, definitions, an
 ## frictionless (adjective)
 > *Added: 2026-04-20*
 
-**Mandarin:** 顺畅的；无阻碍的 (shùnchàng de; wú zǔ'ài de)
+**Mandarin:** 顺畅的；无阻碍的
 **French:** fluide; sans friction; sans accroc
 
 **Definition:** Smooth and effortless, with no unnecessary obstacles or steps. Widely used in tech, product, and business contexts to describe seamless user experiences.

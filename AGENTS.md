@@ -23,7 +23,7 @@ Read `input.md` and extract all non-empty lines under `## Words to Process`. If 
 For each English word or phrase, generate:
 - Heading: `## [word] ([part of speech])`
 - Date line: `> *Added: [YYYY-MM-DD]*`
-- `**Mandarin:** [translation] ([pinyin])`
+- `**Mandarin:** [translation]`
 - `**French:** [translation]`
 - `**Definition:** [concise English definition]`
 - **Examples:** one sentence each in 🇺🇸 English, 🇨🇳 Mandarin, 🇫🇷 French
@@ -35,7 +35,7 @@ For each English word or phrase, generate:
 The user knows the concept in Chinese but wants to know how to say it naturally in English and French.
 
 For each Mandarin word or expression, generate:
-- Heading: `## [expression] ([pinyin])`
+- Heading: `## [expression]`
 - Date line: `> *Added: [YYYY-MM-DD]*`
 - **English Equivalents** — ranked most-idiomatic to most-literal, 3–5 options, each with a register/context note. Prioritize expressions a native English speaker would actually use.
 - **French Equivalents** — 2–3 options with notes
@@ -48,7 +48,7 @@ For each Mandarin word or expression, generate:
 For each French word or phrase, generate:
 - Heading: `## [word] ([part of speech][, gender if noun])`
 - Date line: `> *Added: [YYYY-MM-DD]*`
-- `**Mandarin:** [translation] ([pinyin])`
+- `**Mandarin:** [translation]`
 - `**English:** [translation]`
 - `**Note:** [usage note or definition]`
 - **Examples:** one sentence each in 🇫🇷 French, 🇺🇸 English, 🇨🇳 Mandarin

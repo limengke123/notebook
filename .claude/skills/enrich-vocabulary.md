@@ -27,7 +27,7 @@ For each entry, detect the source language and generate the enriched content:
 Generate:
 - Word/phrase as a level-2 heading with part of speech
 - Date added
-- Mandarin translation(s) with pinyin
+- Mandarin translation(s)
 - French translation(s)
 - Clear English definition
 - 3 example sentences — one each in English 🇺🇸, Mandarin 🇨🇳, French 🇫🇷
@@ -38,7 +38,7 @@ Use this format:
 ## [word/phrase] ([part of speech])
 > *Added: [YYYY-MM-DD]*
 
-**Mandarin:** [translation] ([pinyin])
+**Mandarin:** [translation]
 **French:** [translation]
 
 **Definition:** [concise definition]
@@ -62,7 +62,7 @@ Use this format:
 This means the user knows the concept in Mandarin but doesn't know how to express it naturally in English or French. Prioritize finding the most idiomatic, native-sounding English — avoid word-for-word literal translations.
 
 Generate:
-- Expression as heading with pinyin
+- Expression as heading
 - Date added
 - **English equivalents** ranked from most native/idiomatic to more literal (list 3–5 options, explain register differences)
 - **French equivalents** (2–3 options)
@@ -71,7 +71,7 @@ Generate:
 
 Use this format:
 ```
-## [expression] ([pinyin])
+## [expression]
 > *Added: [YYYY-MM-DD]*
 
 **English Equivalents** *(most idiomatic → more literal)*
@@ -100,7 +100,7 @@ Use this format:
 Generate:
 - Word/phrase as heading with part of speech and grammatical gender if a noun
 - Date added
-- Mandarin translation(s) with pinyin
+- Mandarin translation(s)
 - English translation(s)
 - Usage note or definition (can be in English)
 - 3 example sentences — French 🇫🇷, English 🇺🇸, Mandarin 🇨🇳
@@ -111,7 +111,7 @@ Use this format:
 ## [word/phrase] ([part of speech][, gender])
 > *Added: [YYYY-MM-DD]*
 
-**Mandarin:** [translation] ([pinyin])
+**Mandarin:** [translation]
 **English:** [translation]
 
 **Note:** [usage note or definition]
@@ -168,7 +168,6 @@ If `git push` fails because no remote is configured, commit the changes and tell
 ## Notes for the AI
 
 - Use today's actual date for "Added" fields.
-- For Mandarin entries, always include accurate pinyin with tone marks.
 - For English equivalents of Mandarin, think like a native speaker — what would a native actually say? Avoid translationese.
 - Keep example sentences natural and varied — don't repeat the same sentence structure.
 - The user's mother language is Mandarin (Simplified Chinese). Mandarin explanations should be in Simplified Chinese.
