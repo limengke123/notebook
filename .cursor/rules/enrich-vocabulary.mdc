@@ -1,5 +1,5 @@
 ---
-description: When the user asks to process or enrich vocabulary, read words/phrases from input.md, detect language (English/Mandarin/French), enrich with translations (EN↔ZH↔FR), definitions, and example sentences, append to the matching vocabulary file under vocabulary/, clear input.md, and push to git.
+description: When the user asks to process or enrich vocabulary, read words/phrases from input.md, detect language and part of speech, enrich with translations (EN↔ZH↔FR) and examples, append to the correct category file under vocabulary/, clear input.md, and push to git.
 globs:
   - input.md
 alwaysApply: false
@@ -7,16 +7,30 @@ alwaysApply: false
 
 # Enrich Vocabulary Rule
 
-When the user asks to "enrich vocabulary", "process words", or "process input.md", follow this workflow:
+When the user says "enrich vocabulary", "process words", or "process input.md", follow this workflow.
 
 ## 1. Read `input.md`
 
-Extract all non-empty lines under `## Words to Process`. If empty, say so and stop.
+Extract non-empty lines under `## Words to Process`. If empty, say so and stop.
 
-## 2. Enrich Each Entry
+## 2. Detect Language, Part of Speech, and Target File
 
-**English word/phrase** → save to `vocabulary/english.md`
+**English → `vocabulary/english/[pos].md`**
+- noun → `nouns.md`
+- verb → `verbs.md`
+- adjective → `adjectives.md`
+- adverb → `adverbs.md`
+- phrase/idiom/phrasal verb → `phrases.md`
 
+**French → `vocabulary/french/[pos].md`** (same mapping)
+
+**Mandarin → `vocabulary/mandarin/[type].md`**
+- 成语 (4-character idiom) → `chengyu.md`
+- all others → `expressions.md`
+
+## 3. Generate Content
+
+**English entry:**
 ```
 ## [word] ([part of speech])
 > *Added: [YYYY-MM-DD]*
@@ -38,10 +52,7 @@ Extract all non-empty lines under `## Words to Process`. If empty, say so and st
 ---
 ```
 
-**Mandarin word/expression** → save to `vocabulary/mandarin.md`
-
-User wants to know how to say this naturally in English (primary) and French. Prioritize idiomatic, native-sounding English over literal translation.
-
+**Mandarin entry** — user wants native English (primary) and French for a Chinese concept:
 ```
 ## [expression]
 > *Added: [YYYY-MM-DD]*
@@ -55,18 +66,17 @@ User wants to know how to say this naturally in English (primary) and French. Pr
 - [expression] — [note]
 - [expression] — [note]
 
-**Context:** [usage/nuance explanation in Simplified Chinese]
+**Context:** [用中文解释使用场景和语气]
 
 **Examples:**
 - 🇨🇳 [Mandarin sentence]
-- 🇺🇸 [English — most natural expression]
+- 🇺🇸 [English — most natural]
 - 🇫🇷 [French example]
 
 ---
 ```
 
-**French word/phrase** → save to `vocabulary/french.md`
-
+**French entry:**
 ```
 ## [word] ([part of speech][, gender])
 > *Added: [YYYY-MM-DD]*
@@ -86,9 +96,11 @@ User wants to know how to say this naturally in English (primary) and French. Pr
 ---
 ```
 
-## 3. Reset `input.md`
+## 4. Append to Target File
 
-After processing all entries, overwrite `input.md` with:
+Append to the correct file. Create file with header if it doesn't exist.
+
+## 5. Reset `input.md`
 
 ```markdown
 # Vocabulary Input
@@ -104,17 +116,18 @@ Run the `enrich-vocabulary` skill to process this file.
 
 ```
 
-## 4. Git Commit and Push
+## 6. Git Commit and Push
 
 ```bash
 git add -A
-git commit -m "vocab: add [list of words processed]"
+git commit -m "vocab: add [list of words]"
 git push
 ```
 
 ## User Context
 
 - Mother language: Mandarin Simplified Chinese
-- Learning: English (primary focus) and French
-- Context notes and explanations for Mandarin entries should be written in Simplified Chinese
-- For Mandarin → English: always prioritize what a native English speaker would naturally say
+- Learning: English (primary), French (secondary)
+- Mandarin context notes must be in Simplified Chinese
+- For Mandarin → English: native/idiomatic first, never literal
+- Cross-references are built-in: English entries include `**French:**`, French entries include `**English:**` (brief only)

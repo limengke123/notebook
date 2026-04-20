@@ -3,58 +3,99 @@
 A personal vocabulary learning repo for English and French, with Mandarin as the base language.
 Add words to [`input.md`](./input.md), run the skill, and they land in structured vocabulary files with translations and examples.
 
+The site is auto-built with MkDocs and published to **GitHub Pages** on every push.
+
+> After forking or setting up: go to **Settings → Pages → Source** and select the `gh-pages` branch.
+
 ---
 
 ## Workflow
 
 ```
-input.md  ──(run skill)──▶  vocabulary/english.md
-                        ├──▶  vocabulary/french.md
-                        └──▶  vocabulary/mandarin.md
+input.md  ──(run skill)──▶  vocabulary/english/adjectives.md
+                        ├──▶  vocabulary/english/verbs.md
+                        ├──▶  vocabulary/french/nouns.md
+                        ├──▶  vocabulary/mandarin/expressions.md
+                        └──▶  ... (routed by language + part of speech)
+                                      │
+                              git push to main
+                                      │
+                           GitHub Actions builds MkDocs
+                                      │
+                              GitHub Pages (gh-pages branch)
 ```
 
 1. **Add words** to [`input.md`](./input.md) under `## Words to Process` — one per line, any language
-2. **Run the skill** — Claude/Cursor/Codex detects the language, enriches each entry, and saves it
+2. **Run the skill** — AI detects language and part of speech, enriches each entry, saves to the right file
 3. **`input.md` is cleared** automatically; enriched entries appear in the vocabulary files
 4. Changes are **committed and pushed** automatically
+5. **GitHub Actions** builds the MkDocs site and deploys to GitHub Pages
 
 ---
 
 ## Language Handling
 
-| Input language | What gets generated | Saved to |
+| Input | What gets generated | Saved to |
 |---|---|---|
-| English | Mandarin (with pinyin) + French + definition + collocations | [`vocabulary/english.md`](./vocabulary/english.md) |
-| 中文 Mandarin | Ranked native English expressions (idioms-first) + French + context notes in Chinese | [`vocabulary/mandarin.md`](./vocabulary/mandarin.md) |
-| Français French | Mandarin + English + register notes | [`vocabulary/french.md`](./vocabulary/french.md) |
+| English | Mandarin + French (brief) + definition + collocations | `vocabulary/english/[pos].md` |
+| 中文 Mandarin | Ranked native English expressions (idioms-first) + French | `vocabulary/mandarin/expressions.md` or `chengyu.md` |
+| Français French | Mandarin + English (brief) + register notes | `vocabulary/french/[pos].md` |
+
+Cross-references are built-in: English entries always include a `**French:**` line; French entries always include an `**English:**` line.
 
 ---
 
-## Files
+## File Structure
 
-| File | Description |
-|---|---|
-| [`input.md`](./input.md) | Add words here, one per line |
-| [`vocabulary/english.md`](./vocabulary/english.md) | English words with ZH + FR translations |
-| [`vocabulary/french.md`](./vocabulary/french.md) | French words with ZH + EN translations |
-| [`vocabulary/mandarin.md`](./vocabulary/mandarin.md) | Mandarin expressions with native EN + FR equivalents |
-| [`.claude/skills/enrich-vocabulary.md`](./.claude/skills/enrich-vocabulary.md) | Skill definition for Claude Code |
-| [`AGENTS.md`](./AGENTS.md) | Agent instructions for Codex |
-| [`.cursor/rules/enrich-vocabulary.mdc`](./.cursor/rules/enrich-vocabulary.mdc) | Rule for Cursor |
+```
+vocabulary/
+  english/
+    adjectives.md
+    adverbs.md
+    nouns.md
+    verbs.md
+    phrases.md
+  french/
+    adjectives.md
+    adverbs.md
+    nouns.md
+    verbs.md
+    phrases.md
+  mandarin/
+    expressions.md
+    chengyu.md
+  index.md            ← MkDocs home page
+input.md              ← Add words here
+mkdocs.yml            ← Site config
+requirements.txt      ← mkdocs-material
+.github/workflows/
+  deploy.yml          ← Auto-build on push
+```
 
 ---
 
-## How to Run
+## Running the Skill
 
-**Claude Code**
+**Claude Code:**
 ```
 /enrich-vocabulary
 ```
-or just say: `process my words`
+or: `process my words`
 
-**Cursor** — open Agent mode and say:
+**Cursor** (agent mode):
 ```
 enrich vocabulary
 ```
 
-**Codex** — the agent picks up the workflow from `AGENTS.md` automatically.
+**Codex:** picks up the workflow from `AGENTS.md` automatically.
+
+---
+
+## Local Preview
+
+```bash
+pip install -r requirements.txt
+mkdocs serve
+```
+
+Then open `http://localhost:8000`.

@@ -1,39 +1,71 @@
 ---
-description: Read words/phrases from input.md, enrich each with translations (EN↔ZH↔FR), definitions, and examples, append to the matching vocabulary file, clear the input, and push to git. Supports English, Mandarin, and French input.
+description: Read words/phrases from input.md, detect language and part of speech, enrich with translations (EN↔ZH↔FR) and examples, append to the correct category file under vocabulary/, clear input.md, and push to git.
 ---
 
 # Enrich Vocabulary
 
-Process words and phrases from `input.md`, enrich each one with translations and examples, append to the appropriate vocabulary file, clear the input, and push to git.
+Process words and phrases from `input.md`, enrich each one with translations and examples, save to the correct category file, clear input, and push to git.
 
 ## Trigger
 
-User runs `/enrich-vocabulary` or says something like "enrich vocabulary", "process my words", "process input".
+User runs `/enrich-vocabulary` or says "enrich vocabulary", "process my words", "process input".
 
 ## Steps
 
 ### 1. Read Input
 
-Read `input.md`. Extract all lines under the `## Words to Process` section that are non-empty and not comment lines. If the section is empty, tell the user and stop.
+Read `input.md`. Extract all non-empty lines under `## Words to Process`. If empty, tell the user and stop.
 
-### 2. Detect Language and Enrich
+### 2. Detect Language, Part of Speech, and Target File
 
-For each entry, detect the source language and generate the enriched content:
+For each entry, determine:
+- **Language**: English / Mandarin / French
+- **Part of speech** (for English and French): noun, verb, adjective, adverb, phrase/idiom
+- **Target file** (see routing table below)
+
+#### File Routing
+
+**English entries:**
+| Part of speech | File |
+|---|---|
+| noun | `vocabulary/english/nouns.md` |
+| verb | `vocabulary/english/verbs.md` |
+| adjective | `vocabulary/english/adjectives.md` |
+| adverb | `vocabulary/english/adverbs.md` |
+| phrase, idiom, phrasal verb, expression, or multi-word | `vocabulary/english/phrases.md` |
+| ambiguous / multiple (e.g. "verb / noun") | use the first/primary part of speech |
+
+**French entries:**
+| Part of speech | File |
+|---|---|
+| noun (nom) | `vocabulary/french/nouns.md` |
+| verb (verbe) | `vocabulary/french/verbs.md` |
+| adjective (adjectif) | `vocabulary/french/adjectives.md` |
+| adverb (adverbe) | `vocabulary/french/adverbs.md` |
+| phrase, expression | `vocabulary/french/phrases.md` |
+
+**Mandarin entries:**
+| Type | File |
+|---|---|
+| 成语 (4-character classical idiom) | `vocabulary/mandarin/chengyu.md` |
+| all other expressions | `vocabulary/mandarin/expressions.md` |
+
+### 3. Generate Enriched Content
 
 ---
 
-**If the entry is in English** (English word, phrase, or idiom):
+**If English:**
 
 Generate:
 - Word/phrase as a level-2 heading with part of speech
 - Date added
-- Mandarin translation(s)
-- French translation(s)
+- Mandarin translation(s) — brief, primary meaning(s)
+- French translation(s) — brief form, matches the part of speech
 - Clear English definition
-- 3 example sentences — one each in English 🇺🇸, Mandarin 🇨🇳, French 🇫🇷
+- 3 example sentences — one each in 🇺🇸 English, 🇨🇳 Mandarin, 🇫🇷 French
 - 2–4 common collocations or related phrases with Mandarin gloss
 
-Use this format:
+Format:
 ```
 ## [word/phrase] ([part of speech])
 > *Added: [YYYY-MM-DD]*
@@ -57,25 +89,25 @@ Use this format:
 
 ---
 
-**If the entry is in Mandarin** (Chinese characters or a Chinese concept written in pinyin):
+**If Mandarin:**
 
-This means the user knows the concept in Mandarin but doesn't know how to express it naturally in English or French. Prioritize finding the most idiomatic, native-sounding English — avoid word-for-word literal translations.
+The user knows this concept in Mandarin but wants to express it naturally in English (primary) and French. Prioritize idiomatic, native-sounding English — avoid word-for-word literal translations.
 
 Generate:
 - Expression as heading
 - Date added
-- **English equivalents** ranked from most native/idiomatic to more literal (list 3–5 options, explain register differences)
-- **French equivalents** (2–3 options)
-- Context note explaining nuance, when/where to use it
-- 3 example usages — Mandarin 🇨🇳, English 🇺🇸 (use the most natural expression), French 🇫🇷
+- English equivalents ranked most-idiomatic → most-literal (3–5 options, each with a register/context note)
+- French equivalents (2–3 options with notes)
+- Context explanation in Simplified Chinese
+- 3 example usages
 
-Use this format:
+Format:
 ```
 ## [expression]
 > *Added: [YYYY-MM-DD]*
 
 **English Equivalents** *(most idiomatic → more literal)*
-1. [most native English expression] — [brief note on register/context]
+1. [most native English expression] — [register/context note]
 2. [second option] — [note]
 3. [third option] — [note]
 
@@ -83,11 +115,11 @@ Use this format:
 - [French expression] — [note]
 - [French expression] — [note]
 
-**Context:** [When/how this expression is used; any cultural nuance]
+**Context:** [用中文解释：使用场景、语气、文化背景]
 
 **Examples:**
 - 🇨🇳 [Mandarin sentence]
-- 🇺🇸 [English — using the most natural expression]
+- 🇺🇸 [English — most natural expression]
 - 🇫🇷 [French example]
 
 ---
@@ -95,18 +127,18 @@ Use this format:
 
 ---
 
-**If the entry is in French** (French word or phrase):
+**If French:**
 
 Generate:
 - Word/phrase as heading with part of speech and grammatical gender if a noun
 - Date added
 - Mandarin translation(s)
-- English translation(s)
-- Usage note or definition (can be in English)
+- English translation(s) — brief, matches part of speech
+- Usage note or definition
 - 3 example sentences — French 🇫🇷, English 🇺🇸, Mandarin 🇨🇳
 - Register note (formal / informal / neutral / slang / literary)
 
-Use this format:
+Format:
 ```
 ## [word/phrase] ([part of speech][, gender])
 > *Added: [YYYY-MM-DD]*
@@ -128,17 +160,15 @@ Use this format:
 
 ---
 
-### 3. Append to the Correct Vocabulary File
+### 4. Append to the Target File
 
-- English entries → append to `vocabulary/english.md`
-- Mandarin entries → append to `vocabulary/mandarin.md`
-- French entries → append to `vocabulary/french.md`
+Append the enriched entry to the file determined in Step 2. If the file doesn't exist, create it with the appropriate language/category header first.
 
-If the vocabulary file doesn't exist yet, create it with the appropriate header first.
+If the mkdocs.yml nav does not yet include the new file, add it under the correct section.
 
-### 4. Clear Input
+### 5. Clear Input
 
-Reset `input.md` to this exact content (preserve header, clear processed words):
+Reset `input.md` to this exact content:
 
 ```
 # Vocabulary Input
@@ -154,20 +184,20 @@ Run the `enrich-vocabulary` skill to process this file.
 
 ```
 
-### 5. Git Commit and Push
+### 6. Git Commit and Push
 
-Run the following commands:
 ```bash
 git add -A
-git commit -m "vocab: add $(echo '[comma-separated list of words processed]')"
+git commit -m "vocab: add [comma-separated list of words processed]"
 git push
 ```
 
-If `git push` fails because no remote is configured, commit the changes and tell the user they need to add a remote with `git remote add origin <url>` before pushing.
+If push fails because no remote is configured, commit and tell the user to run `git remote add origin <url>`.
 
-## Notes for the AI
+## Notes
 
 - Use today's actual date for "Added" fields.
-- For English equivalents of Mandarin, think like a native speaker — what would a native actually say? Avoid translationese.
-- Keep example sentences natural and varied — don't repeat the same sentence structure.
-- The user's mother language is Mandarin (Simplified Chinese). Mandarin explanations should be in Simplified Chinese.
+- For Mandarin → English: think like a native speaker. What would someone actually say? Avoid translationese.
+- Keep example sentences natural and varied in structure.
+- The user's mother language is Mandarin Simplified Chinese. Context explanations for Mandarin entries should be written in Simplified Chinese.
+- Cross-references are built into the format: English entries always include a French field, French entries always include an English field — keep these brief (just the form, not a full entry).
